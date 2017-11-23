@@ -52,7 +52,6 @@ class EditorHook extends Component {
   }
 
   grabRef = (ref) => {
-    if (ref.)
     console.log(ref)
   }
 }
