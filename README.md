@@ -15,12 +15,12 @@ npm install --save react-revise
 ```js
 import React, { Component } from 'react'
 
-import MyComponent from 'react-modern-library-component'
+import { EditorHook } from 'react-revise'
 
 class Example extends Component {
   render () {
     return (
-      <MyComponent />
+      <EditorHook><h1>Hello, World!</h1></EditorHook>
     )
   }
 }
@@ -28,4 +28,4 @@ class Example extends Component {
 
 ## License
 
-MIT © [Travis Fischer](https://github.com/danpen)
+MIT © [Daniel Pendergast](https://github.com/danpen)
