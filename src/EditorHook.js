@@ -43,6 +43,8 @@ class EditorHook extends Component {
       left: ${boundingBox.left}px;
       width: ${boundingBox.width}px;
       height: ${boundingBox.height}px;
+
+      resize: none;
     `
 
     this.toggleEditible(editable, realElement, imaginaryElement)
