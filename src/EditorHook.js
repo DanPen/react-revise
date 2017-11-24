@@ -44,7 +44,10 @@ class EditorHook extends Component {
       width: ${boundingBox.width}px;
       height: ${boundingBox.height}px;
 
+      border: none;
+      background-color: transparent;
       resize: none;
+      outline: none;
     `
 
     this.toggleEditible(editable, realElement, imaginaryElement)
