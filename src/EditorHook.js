@@ -15,6 +15,10 @@ class EditorHook extends Component {
     children: PropTypes.node
   }
 
+  state = {
+    value: ''
+  }
+
   componentWillMount () {
     const { children } = this.props
 
@@ -52,6 +56,9 @@ class EditorHook extends Component {
   }
 
   toggleEditible = (editable) => {
+    const childrenArray = React.Children.toArray(this.props.children)
+    const realComponent = childrenArray[0]
+
     const realElement = ReactDOM.findDOMNode(this.refs['0'])
     const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
     // When in edit mode:
@@ -59,14 +66,27 @@ class EditorHook extends Component {
     // Use visibility:hidden on realElement because we don't want the page to re-layout, in the case that it has position: static
     // Use display:none on imaginaryElement because we have no need to render it at all
 
-    // TODO: The imaginaryElement's value needs to be set everytime we go into edit mode
     if (editable) {
       realElement.style.visibility = 'hidden'
       imaginaryElement.style.display = 'block'
+
+      // The imaginaryElement's value needs to be set everytime we go into edit mode
+      // TODO: Certify that realComponent has a string as its only child
+      this.setState({
+        value: realComponent.props.children
+      })
     } else {
       realElement.style.visibility = 'visible'
       imaginaryElement.style.display = 'none'
+
+      // TODO: Call Webhook to save the changes
     }
+  }
+
+  onEdit = (event) => {
+    this.setState({
+      value: event.target.value
+    })
   }
 
   renderChildren = () => {
@@ -77,7 +97,7 @@ class EditorHook extends Component {
     const newChild =  React.cloneElement(child, { ref: 0, key: 0 })
 
     // Create the editable child
-    const editableChild = <textarea ref='1' key='1' value={newChild.props.children} />
+    const editableChild = <textarea ref='1' key='1' value={this.state.value} onChange={this.onEdit} />
 
     return [newChild, editableChild]
   }
