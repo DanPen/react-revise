@@ -105,7 +105,8 @@ class EditorHook extends Component {
       // TODO: Certify that realComponent has a string as its only child
       this.setState({
         originalValue: realComponent.props.children,
-        value: realComponent.props.children
+        value: realComponent.props.children,
+        dirty: false
       })
     } else if (!editable && this.props.editable) {
       realElement.style.visibility = 'visible'
@@ -124,7 +125,19 @@ class EditorHook extends Component {
   }
 
   save = () => {
-    console.log('save')
+    if (!this.state.dirty)
+      return
+
+    console.log('saving')
+
+    const payload = JSON.stringify({
+      [this.props.jsonKey]: this.state.value
+    })
+
+    fetch(this.props.hook, {
+      method: this.props.verb.toUpperCase(),
+      body: payload
+    })
   }
 
   renderChildren = () => {
