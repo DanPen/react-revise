@@ -54,7 +54,11 @@ class EditorHook extends Component {
         case 'bottom':
           return
       }
-      css += `${key}: ${computedStyle[key]};\n`
+      // Ignore numerical indexes
+      if (!isNaN(key))
+        return
+
+      css += `${camelCaseToDash(key)}: ${computedStyle[key]};\n`
     })
     css += 'position: absolute;'
     imaginaryElement.style.cssText += css
@@ -132,6 +136,11 @@ class EditorHook extends Component {
     // So we'll use React 16's feature of rendering multiple children through arrays
     return this.renderChildren()
   }
+}
+
+function camelCaseToDash(input){
+  // Replace Capital letter with the letter + a dash: '-', then lowercase everything.
+  return input.replace(/([A-Z])/g, '-$1').toLowerCase();
 }
 
 export default EditorHook
