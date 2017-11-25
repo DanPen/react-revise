@@ -15,11 +15,19 @@ class EditorHook extends Component {
     children: PropTypes.node
   }
 
-  state = {
-    originalValue: '',
-    value: '',
-    dirty: false,
-    defaultDisplay: ''
+  static instances = []
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      originalValue: '',
+      value: '',
+      dirty: false,
+      defaultDisplay: ''
+    }
+
+    EditorHook.instances.push(this)
   }
 
   realElement = null
