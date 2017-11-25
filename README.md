@@ -3,7 +3,7 @@
 Because every app deserves a WYSIWYG.<br />
 Message your API through Webhooks whenever you edit your rendered components.
 
-[![Travis](https://img.shields.io/travis/DanPen/react-revise.svg)](https://travis-ci.org/DanPen/react-revise) [![NPM](https://img.shields.io/npm/v/react-revise.svg)](https://www.npmjs.com/package/react-revise) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Codetally](http://www.codetally.com/shield/DanPen/react-revise?style=social)](http://www.codetally.com/index.html#/DanPen/react-revise)
+[![Travis](https://img.shields.io/travis/DanPen/react-revise.svg)](https://travis-ci.org/DanPen/react-revise) [![NPM](https://img.shields.io/npm/v/react-revise.svg)](https://www.npmjs.com/package/react-revise) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
