@@ -68,8 +68,8 @@ class EditorHook extends Component {
     // Give the <textarea> an absolute position, pointed to where realElement is
     const boundingBox = realElement.getBoundingClientRect()
     imaginaryElement.style.cssText +=''+ `
-      top: ${boundingBox.top}px;
-      left: ${boundingBox.left}px;
+      top: ${boundingBox.top + window.scrollY}px;
+      left: ${boundingBox.left + window.scrollX}px;
       width: ${boundingBox.width}px;
       height: ${boundingBox.height}px;
     `
