@@ -36,6 +36,16 @@ class EditorHook extends Component {
     const realElement = ReactDOM.findDOMNode(this.refs['0'])
     const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
 
+    // Give the <textarea> an absolute position, pointed to where realElement is
+    const boundingBox = realElement.getBoundingClientRect()
+    imaginaryElement.style.cssText +=';'+ `
+      position: absolute;
+      top: ${boundingBox.top}px;
+      left: ${boundingBox.left}px;
+      width: ${boundingBox.width}px;
+      height: ${boundingBox.height}px;
+    `
+
     // Apply the computed styles to the <textarea>
     const computedStyle = window.getComputedStyle(realElement)
     let css = ''
