@@ -13,7 +13,7 @@ npm install --save react-revise
 
 ## Usage
 
-```js
+```jsx
 import React from 'react'
 
 import { EditorHook } from 'react-revise'
