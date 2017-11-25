@@ -22,6 +22,9 @@ class EditorHook extends Component {
     defaultDisplay: ''
   }
 
+  realElement = null
+  imaginaryElement = null
+
   mutationObserver = null
   windowResizeObserver = null
 
@@ -38,11 +41,11 @@ class EditorHook extends Component {
     const { children, editable } = this.props
 
     const childrenArray = React.Children.toArray(children)
-    const realElement = ReactDOM.findDOMNode(this.refs['0'])
-    const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
+    this.realElement = ReactDOM.findDOMNode(this.refs['0'])
+    this.imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
 
     // Apply the computed styles to the <textarea>
-    const computedStyle = window.getComputedStyle(realElement)
+    const computedStyle = window.getComputedStyle(this.realElement)
     let css = ''
     Object.keys(computedStyle).map(key => {
       // Ignore several positioning keys
@@ -66,13 +69,13 @@ class EditorHook extends Component {
       css += `${camelCaseToDash(key)}: ${computedStyle[key]};\n`
     })
     css += 'position: absolute;'
-    imaginaryElement.style.cssText += css
+    this.imaginaryElement.style.cssText += css
 
-    this.recalculatePosition(realElement, imaginaryElement)
-    this.setupMutationObserver(realElement, imaginaryElement)
-    this.setupWindowResizeObserver(realElement, imaginaryElement)
+    this.recalculatePosition()
+    this.setupMutationObserver()
+    this.setupWindowResizeObserver()
 
-    this.toggleEditible(editable, realElement, imaginaryElement)
+    this.toggleEditible(editable)
 
     // Save the default display mode for the realElement, so we can revert to it later (block, span, etc)
     this.setState({
@@ -80,27 +83,27 @@ class EditorHook extends Component {
     })
   }
 
-  setupMutationObserver = (realElement, imaginaryElement) => {
+  setupMutationObserver = () => {
     this.mutationObserver = new MutationObserver( mutations => {
       mutations.forEach(() => {
-        this.recalculatePosition(realElement, imaginaryElement)
+        this.recalculatePosition()
       })
     })
 
-    this.mutationObserver.observe(realElement, {
+    this.mutationObserver.observe(this.realElement, {
       attributes: true,
       subtree: false
     })
   }
 
-  setupWindowResizeObserver = (realElement, imaginaryElement) => {
-    this.windowResizeObserver = window.addEventListener('resize', () => this.recalculatePosition(realElement, imaginaryElement))
+  setupWindowResizeObserver = () => {
+    this.windowResizeObserver = window.addEventListener('resize', this.recalculatePosition)
   }
 
-  recalculatePosition = (realElement, imaginaryElement) => {
+  recalculatePosition = () => {
     // Give the <textarea> an absolute position, pointed to where realElement is
-    const boundingBox = realElement.getBoundingClientRect()
-    imaginaryElement.style.cssText +=''+ `
+    const boundingBox = this.realElement.getBoundingClientRect()
+    this.imaginaryElement.style.cssText +=''+ `
       top: ${boundingBox.top + window.scrollY}px;
       left: ${boundingBox.left + window.scrollX}px;
       width: ${boundingBox.width}px;
@@ -109,23 +112,18 @@ class EditorHook extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    const realElement = ReactDOM.findDOMNode(this.refs['0'])
-    const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
-
-    this.toggleEditible(nextProps.editable, realElement, imaginaryElement)
+    this.toggleEditible(nextProps.editable)
   }
 
   toggleEditible = (editable) => {
     const childrenArray = React.Children.toArray(this.props.children)
     const realComponent = childrenArray[0]
 
-    const realElement = ReactDOM.findDOMNode(this.refs['0'])
-    const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
     // When in edit mode:
     // hide real element, show imaginaryElement
     if (editable) {
-      realElement.style.visibility = 'hidden'
-      imaginaryElement.style.display = this.state.defaultDisplay
+      this.realElement.style.visibility = 'hidden'
+      this.imaginaryElement.style.display = this.state.defaultDisplay
 
       // The imaginaryElement's value needs to be set everytime we go into edit mode
       // TODO: Certify that realComponent has a string as its only child
@@ -135,8 +133,8 @@ class EditorHook extends Component {
         dirty: false
       })
     } else if (!editable && this.props.editable) {
-      realElement.style.visibility = 'visible'
-      imaginaryElement.style.display = 'none'
+      this.realElement.style.visibility = 'visible'
+      this.imaginaryElement.style.display = 'none'
 
       // TODO: Call Webhook to save the changes
       this.save()
