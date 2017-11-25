@@ -16,7 +16,8 @@ class EditorHook extends Component {
   }
 
   state = {
-    value: ''
+    value: '',
+    defaultDisplay: ''
   }
 
   componentWillMount () {
@@ -54,6 +55,11 @@ class EditorHook extends Component {
     imaginaryElement.style.cssText += css
 
     this.toggleEditible(editable, realElement, imaginaryElement)
+
+    // Save the default display mode for the realElement, so we can revert to it later (block, span, etc)
+    this.setState({
+      defaultDisplay: computedStyle.display
+    })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -71,12 +77,9 @@ class EditorHook extends Component {
     const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
     // When in edit mode:
     // hide real element, show imaginaryElement
-    // Use visibility:hidden on realElement because we don't want the page to re-layout, in the case that it has position: static
-    // Use display:none on imaginaryElement because we have no need to render it at all
-
     if (editable) {
-      realElement.style.visibility = 'hidden'
-      imaginaryElement.style.display = 'block'
+      realElement.style.display = 'none'
+      imaginaryElement.style.display = this.state.defaultDisplay
 
       // The imaginaryElement's value needs to be set everytime we go into edit mode
       // TODO: Certify that realComponent has a string as its only child
@@ -84,7 +87,7 @@ class EditorHook extends Component {
         value: realComponent.props.children
       })
     } else {
-      realElement.style.visibility = 'visible'
+      realElement.style.display = this.state.defaultDisplay
       imaginaryElement.style.display = 'none'
 
       // TODO: Call Webhook to save the changes
@@ -112,6 +115,7 @@ class EditorHook extends Component {
 
   render() {
     // We don't want to wrap a div or span around the children, because that could mess up the DOM due to the disparities of display:block and display:inline
+    // So we'll use React 16's feature of rendering multiple children through arrays
     return this.renderChildren()
   }
 }
