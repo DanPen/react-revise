@@ -22,6 +22,9 @@ class EditorHook extends Component {
     defaultDisplay: ''
   }
 
+  mutationObserver = null
+  windowResizeObserver = null
+
   componentWillMount () {
     const { children } = this.props
 
@@ -65,6 +68,36 @@ class EditorHook extends Component {
     css += 'position: absolute;'
     imaginaryElement.style.cssText += css
 
+    this.recalculatePosition(realElement, imaginaryElement)
+    this.setupMutationObserver(realElement, imaginaryElement)
+    this.setupWindowResizeObserver(realElement, imaginaryElement)
+
+    this.toggleEditible(editable, realElement, imaginaryElement)
+
+    // Save the default display mode for the realElement, so we can revert to it later (block, span, etc)
+    this.setState({
+      defaultDisplay: computedStyle.display
+    })
+  }
+
+  setupMutationObserver = (realElement, imaginaryElement) => {
+    this.mutationObserver = new MutationObserver( mutations => {
+      mutations.forEach(() => {
+        this.recalculatePosition(realElement, imaginaryElement)
+      })
+    })
+
+    this.mutationObserver.observe(realElement, {
+      attributes: true,
+      subtree: false
+    })
+  }
+
+  setupWindowResizeObserver = (realElement, imaginaryElement) => {
+    this.windowResizeObserver = window.addEventListener('resize', () => this.recalculatePosition(realElement, imaginaryElement))
+  }
+
+  recalculatePosition = (realElement, imaginaryElement) => {
     // Give the <textarea> an absolute position, pointed to where realElement is
     const boundingBox = realElement.getBoundingClientRect()
     imaginaryElement.style.cssText +=''+ `
@@ -73,13 +106,6 @@ class EditorHook extends Component {
       width: ${boundingBox.width}px;
       height: ${boundingBox.height}px;
     `
-
-    this.toggleEditible(editable, realElement, imaginaryElement)
-
-    // Save the default display mode for the realElement, so we can revert to it later (block, span, etc)
-    this.setState({
-      defaultDisplay: computedStyle.display
-    })
   }
 
   componentWillReceiveProps (nextProps) {
