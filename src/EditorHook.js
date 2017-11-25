@@ -35,7 +35,7 @@ class EditorHook extends Component {
     const realElement = ReactDOM.findDOMNode(this.refs['0'])
     const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
 
-    // Give the imaginary element an absolute position, pointed to where realElement is
+    // Give the <textarea> an absolute position, pointed to where realElement is
     const boundingBox = realElement.getBoundingClientRect()
     imaginaryElement.style.cssText +=';'+ `
       position: absolute;
@@ -43,12 +43,15 @@ class EditorHook extends Component {
       left: ${boundingBox.left}px;
       width: ${boundingBox.width}px;
       height: ${boundingBox.height}px;
-
-      border: none;
-      background-color: transparent;
-      resize: none;
-      outline: none;
     `
+
+    // Apply the computed styles to the <textarea>
+    const computedStyle = window.getComputedStyle(realElement)
+    let css = ''
+    Object.keys(computedStyle).map(key => {
+      css += `${key}: ${computedStyle[key]};\n`
+    })
+    imaginaryElement.style.cssText += css
 
     this.toggleEditible(editable, realElement, imaginaryElement)
   }
