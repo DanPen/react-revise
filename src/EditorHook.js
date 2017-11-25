@@ -44,10 +44,10 @@ class EditorHook extends Component {
       switch (key) {
         case 'position':
         case 'margin':
-        case 'margin-left':
-        case 'margin-right':
-        case 'margin-top':
-        case 'margin-bottom':
+        case 'marginLeft':
+        case 'marginRight':
+        case 'marginTop':
+        case 'marginBottom':
         case 'left':
         case 'right':
         case 'top':
