@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { EditorHook } from 'react-revise'
+import { StatusPanel } from 'react-revise'
 
 class App extends React.Component {
   state = {
@@ -34,6 +35,8 @@ class App extends React.Component {
           </p>
 
         </EditorHook>
+
+        <StatusPanel />
       </div>
     )
   }
