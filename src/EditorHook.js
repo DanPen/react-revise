@@ -36,23 +36,37 @@ class EditorHook extends Component {
     const realElement = ReactDOM.findDOMNode(this.refs['0'])
     const imaginaryElement = ReactDOM.findDOMNode(this.refs['1'])
 
+    // Apply the computed styles to the <textarea>
+    const computedStyle = window.getComputedStyle(realElement)
+    let css = ''
+    Object.keys(computedStyle).map(key => {
+      // Ignore several positioning keys
+      switch (key) {
+        case 'position':
+        case 'margin':
+        case 'margin-left':
+        case 'margin-right':
+        case 'margin-top':
+        case 'margin-bottom':
+        case 'left':
+        case 'right':
+        case 'top':
+        case 'bottom':
+          return
+      }
+      css += `${key}: ${computedStyle[key]};\n`
+    })
+    css += 'position: absolute;'
+    imaginaryElement.style.cssText += css
+
     // Give the <textarea> an absolute position, pointed to where realElement is
     const boundingBox = realElement.getBoundingClientRect()
-    imaginaryElement.style.cssText +=';'+ `
-      position: absolute;
+    imaginaryElement.style.cssText +=''+ `
       top: ${boundingBox.top}px;
       left: ${boundingBox.left}px;
       width: ${boundingBox.width}px;
       height: ${boundingBox.height}px;
     `
-
-    // Apply the computed styles to the <textarea>
-    const computedStyle = window.getComputedStyle(realElement)
-    let css = ''
-    Object.keys(computedStyle).map(key => {
-      css += `${key}: ${computedStyle[key]};\n`
-    })
-    imaginaryElement.style.cssText += css
 
     this.toggleEditible(editable, realElement, imaginaryElement)
 
@@ -78,7 +92,7 @@ class EditorHook extends Component {
     // When in edit mode:
     // hide real element, show imaginaryElement
     if (editable) {
-      realElement.style.display = 'none'
+      realElement.style.visibility = 'hidden'
       imaginaryElement.style.display = this.state.defaultDisplay
 
       // The imaginaryElement's value needs to be set everytime we go into edit mode
@@ -87,7 +101,7 @@ class EditorHook extends Component {
         value: realComponent.props.children
       })
     } else {
-      realElement.style.display = this.state.defaultDisplay
+      realElement.style.visibility = 'visible'
       imaginaryElement.style.display = 'none'
 
       // TODO: Call Webhook to save the changes
