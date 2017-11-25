@@ -107,7 +107,7 @@ class EditorHook extends Component {
         originalValue: realComponent.props.children,
         value: realComponent.props.children
       })
-    } else {
+    } else if (!editable && this.props.editable) {
       realElement.style.visibility = 'visible'
       imaginaryElement.style.display = 'none'
 
