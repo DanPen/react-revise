@@ -16,7 +16,9 @@ class EditorHook extends Component {
   }
 
   state = {
+    originalValue: '',
     value: '',
+    dirty: false,
     defaultDisplay: ''
   }
 
@@ -102,6 +104,7 @@ class EditorHook extends Component {
       // The imaginaryElement's value needs to be set everytime we go into edit mode
       // TODO: Certify that realComponent has a string as its only child
       this.setState({
+        originalValue: realComponent.props.children,
         value: realComponent.props.children
       })
     } else {
@@ -109,13 +112,19 @@ class EditorHook extends Component {
       imaginaryElement.style.display = 'none'
 
       // TODO: Call Webhook to save the changes
+      this.save()
     }
   }
 
   onEdit = (event) => {
     this.setState({
-      value: event.target.value
+      value: event.target.value,
+      dirty: event.target.value !== this.state.originalValue
     })
+  }
+
+  save = () => {
+    console.log('save')
   }
 
   renderChildren = () => {
