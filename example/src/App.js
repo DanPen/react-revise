@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import { EditorHook } from 'react-revise'
 
-class App extends Component {
+class App extends React.Component {
   state = {
     editable: false
   }
@@ -15,14 +15,24 @@ class App extends Component {
         })} />
         <label for="checkbox"> edit</label>
 
-        <EditorHook editable={this.state.editable}>
+        <EditorHook editable={this.state.editable}
+          hook={`/api/blog/hello-world`}
+          verb='PUT'
+          jsonKey='title'>
+
           <h1>Hello, World!</h1>
+
         </EditorHook>
 
-        <EditorHook editable={this.state.editable}>
+        <EditorHook editable={this.state.editable}
+          hook={`/api/blog/hello-world`}
+          verb='PUT'
+          jsonKey='body'>
+
           <p>
             Tempor mollit dolore culpa occaecat labore voluptate Lorem esse. Reprehenderit esse mollit ullamco ullamco fugiat consequat nulla nostrud. Nisi dolore veniam proident ea eiusmod mollit excepteur. Laborum esse minim est proident ex velit ut eu culpa.
           </p>
+
         </EditorHook>
       </div>
     )
