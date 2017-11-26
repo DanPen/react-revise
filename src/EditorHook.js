@@ -163,14 +163,18 @@ class EditorHook extends Component {
     if (!this.state.dirty)
       return
 
+    const hookTokenized = this.props.hook.split(' ')
+    const verb = hookTokenized[0].toUpperCase()
+    const path = hookTokenized[1]
+
     console.log('saving '+this.props.jsonKey)
 
     const payload = JSON.stringify({
       [this.props.jsonKey]: this.state.value
     })
 
-    fetch(this.props.hook, {
-      method: this.props.verb.toUpperCase(),
+    fetch(path, {
+      method: verb,
       body: payload
     })
   }

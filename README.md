@@ -10,10 +10,10 @@ How many times have you made an amazing web application only to realize that you
 
 Or how often do you want to ditch bulky CMSs in favor of single page apps (or PWAs), but find out that implementing a full-fledged CMS in React would take ridiculous amounts of time?
 
-That's why I created `react-revise`. Simply wrap whatever component you want to be able to edit in WYSIWYG-efficiency with an `<EditorHook>` and specify the API parameters. A single `<StatusPanel>` with a desired styled button is also required in order to display the dialog for saving changes (more customizability is planned).
+That's why I created `react-revise`. Simply wrap whatever component you want to be able to edit in WYSIWYG-efficiency with an `<EditorHook>` and specify the hook parameters. A single `<StatusPanel>` with a desired styled button is also required in order to display the dialog for saving changes (more customizability is planned).
 
 ```jsx
-<EditorHook editable={true} hook='/api/blog/hello-world' verb='PUT' jsonKey='title'>
+<EditorHook editable={true} hook='PUT /api/blog/hello-world' jsonKey='title'>
   <h1>Hello, World!</h1>
 </EditorHook>
 
@@ -59,8 +59,7 @@ class App extends React.Component {
         <label for="checkbox"> edit</label>
 
         <EditorHook editable={this.state.editable}
-          hook={`/api/blog/hello-world`}
-          verb='PUT'
+          hook='POST /api/blog/hello-world'
           jsonKey='title'>
 
           <h1>Hello, World!</h1>
@@ -68,8 +67,7 @@ class App extends React.Component {
         </EditorHook>
 
         <EditorHook editable={this.state.editable}
-          hook={`/api/blog/hello-world`}
-          verb='PUT'
+          hook='PUT /api/blog/hello-world'
           jsonKey='body'>
 
           <p>

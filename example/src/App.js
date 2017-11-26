@@ -26,8 +26,7 @@ class App extends React.Component {
         <label for="checkbox"> edit</label>
 
         <EditorHook editable={this.state.editable}
-          hook={`/api/blog/hello-world`}
-          verb='PUT'
+          hook='POST /api/blog/hello-world'
           jsonKey='title'>
 
           <h1>Hello, World!</h1>
@@ -35,8 +34,7 @@ class App extends React.Component {
         </EditorHook>
 
         <EditorHook editable={this.state.editable}
-          hook={`/api/blog/hello-world`}
-          verb='PUT'
+          hook='PUT /api/blog/hello-world'
           jsonKey='body'>
 
           <p>
