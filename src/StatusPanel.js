@@ -51,11 +51,18 @@ class StatusPanel extends Component {
       dirtyCount > 0 ? (
         <div>
           {changes}
-          <div style={{...inlineBlock, marginLeft: '1rem'}}><Button>save</Button></div>
+          <div style={{...inlineBlock, marginLeft: '1rem'}}>
+            <Button onClick={this.saveAll}>save</Button>
+          </div>
         </div>
       ) : '',
       document.getElementById('root').parentNode.appendChild(StatusPanel.modalRoot)
     )
+  }
+
+  saveAll = () => {
+    console.log('saving all...')
+    EditorHook.instances.forEach(instance => instance.save())
   }
 }
 

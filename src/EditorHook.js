@@ -163,7 +163,7 @@ class EditorHook extends Component {
     if (!this.state.dirty)
       return
 
-    console.log('saving')
+    console.log('saving '+this.props.jsonKey)
 
     const payload = JSON.stringify({
       [this.props.jsonKey]: this.state.value
