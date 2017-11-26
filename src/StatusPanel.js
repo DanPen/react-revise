@@ -43,12 +43,13 @@ class StatusPanel extends Component {
       verticalAlign: 'middle'
     }
 
-    return ReactDOM.createPortal((
+    return ReactDOM.createPortal(
+      dirtyCount > 0 ? (
         <div>
           <div style={{...inlineBlock, fontSize: '1.2rem'}}>{dirtyCount} changes</div>
           <div style={{...inlineBlock, marginLeft: '1rem'}}><Button>save</Button></div>
         </div>
-      ),
+      ) : '',
       document.getElementById('root').parentNode.appendChild(StatusPanel.modalRoot)
     )
   }
