@@ -2,6 +2,15 @@ import React from 'react'
 
 import { EditorHook } from 'react-revise'
 import { StatusPanel } from 'react-revise'
+import styled from 'styled-components'
+
+const MyButton = styled.button`
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0);
+  outline: none;
+  border: 1px solid #000;
+`
 
 class App extends React.Component {
   state = {
@@ -36,7 +45,7 @@ class App extends React.Component {
 
         </EditorHook>
 
-        <StatusPanel />
+        <StatusPanel saveButton={MyButton} />
       </div>
     )
   }

@@ -18,10 +18,14 @@ class StatusPanel extends Component {
     StatusPanel.modalRoot = document.createElement('div')
     StatusPanel.modalRoot.style.cssText = `
       position: fixed;
+      z-index: 100000;
+
       bottom: 0px;
       width: 100vw;
-      height: 60px;
-      z-index: 100000;
+      padding: 1rem;
+      box-sizing: border-box;
+
+      text-align: right;
     `
   }
 
@@ -32,9 +36,17 @@ class StatusPanel extends Component {
 
   render() {
     const dirtyCount = EditorHook.instances.filter(instance => instance.state.dirty).length
+    const Button = this.props.saveButton
+
+    const inlineBlock = {
+      display: 'inline-block',
+      verticalAlign: 'middle'
+    }
+
     return ReactDOM.createPortal((
         <div>
-          {dirtyCount} changes to be saved.
+          <div style={{...inlineBlock, fontSize: '1.2rem'}}>{dirtyCount} changes</div>
+          <div style={{...inlineBlock, marginLeft: '1rem'}}><Button>save</Button></div>
         </div>
       ),
       document.getElementById('root').parentNode.appendChild(StatusPanel.modalRoot)
