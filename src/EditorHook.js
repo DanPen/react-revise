@@ -17,6 +17,9 @@ class EditorHook extends Component {
 
   static instances = []
 
+  // Set by StatusPanel
+  static statusPanel = null
+
   constructor (props) {
     super(props)
 
@@ -160,7 +163,7 @@ class EditorHook extends Component {
     if (!this.state.dirty)
       return
 
-    console.log('saving')
+    console.log('saving '+this.props.jsonKey)
 
     const payload = JSON.stringify({
       [this.props.jsonKey]: this.state.value
@@ -183,6 +186,12 @@ class EditorHook extends Component {
     const editableChild = <textarea ref='1' key='1' value={this.state.value} onChange={this.onEdit} />
 
     return [newChild, editableChild]
+  }
+
+  componentWillUpdate (nextProps, nextState) {
+    // Let the single StatusPanel instance know that it needs to update iff our dirty field has changed
+    if (this.state.dirty !== nextState.dirty)
+      EditorHook.statusPanel.forceUpdate()
   }
 
   render() {
