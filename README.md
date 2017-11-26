@@ -5,13 +5,30 @@ Message your API through Webhooks whenever you edit your rendered components.
 
 [![Travis](https://img.shields.io/travis/DanPen/react-revise.svg)](https://travis-ci.org/DanPen/react-revise) [![NPM](https://img.shields.io/npm/v/react-revise.svg)](https://www.npmjs.com/package/react-revise) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+# Why
+How many times have you made an amazing web application only to realize that your clients are going to need ability to change the content?
+
+Or how often do you want to ditch bulky CMSs in favor of single page apps (or PWAs), but find out that implementing a full-fledged CMS in React would take ridiculous amounts of time?
+
+That's why I created `react-revise`. Simply wrap whatever component you want to be able to edit in WYSIWYG-efficiency with an `<EditorHook>` and specify the API parameters. A single `<StatusPanel>` with a desired styled button is also required in order to display the dialog for saving changes (more customizability is planned).
+
+```jsx
+<EditorHook editable={true} hook='/api/blog/hello-world' verb='PUT' jsonKey='title'>
+  <h1>Hello, World!</h1>
+</EditorHook>
+
+<StatusPanel saveButton={ButtonComponent} />
+```
+
+The `editable` property should be set to according to authentication status.
+
 ## Install
 
 ```bash
 npm install --save react-revise
 ```
 
-## Usage
+## Example Usage
 
 ```jsx
 import React from 'react'
