@@ -43,16 +43,24 @@ class StatusPanel extends Component {
       verticalAlign: 'middle'
     }
 
+    const changes = <div style={{...inlineBlock, fontSize: '1.2rem'}}>
+      {dirtyCount} {pluralize('change', dirtyCount)}
+    </div>
+
     return ReactDOM.createPortal(
       dirtyCount > 0 ? (
         <div>
-          <div style={{...inlineBlock, fontSize: '1.2rem'}}>{dirtyCount} changes</div>
+          {changes}
           <div style={{...inlineBlock, marginLeft: '1rem'}}><Button>save</Button></div>
         </div>
       ) : '',
       document.getElementById('root').parentNode.appendChild(StatusPanel.modalRoot)
     )
   }
+}
+
+function pluralize (word, count) {
+  return (count === 1) ? word : word+'s'
 }
 
 export default StatusPanel
